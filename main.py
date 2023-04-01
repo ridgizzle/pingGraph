@@ -11,7 +11,7 @@ screen_height = 500
 screen = pygame.display.set_mode((screen_width, screen_height))
 
 # Set the color of the bars
-bar_colors = []
+bar_colors = [(0, 255, 0), (255, 0, 0)]
 
 # Set the width and height of the bars
 bar_width = 60
@@ -21,17 +21,19 @@ bar_height = 30
 num_bars = 10
 
 # Add more colors to bar_colors to match the number of bars
-while len(bar_colors) < num_bars:
-    #bar_colors.append((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
-    bar_colors.append((0, 255, 0))
+# while len(bar_colors) < num_bars:
+#     #bar_colors.append((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+#     bar_colors.append((0, 255, 0))
 
 # Set the initial positions and speeds of the bars
 bars = []
+bar_identifier = 0
 for i in range(num_bars):
     bar_x = 0
     bar_y = (i + 1) * (bar_height + 10)
     bar_speed = 8
-    bars.append((bar_x, bar_y, bar_speed))
+    bar_identifier += 1
+    bars.append((bar_x, bar_y, bar_speed, bar_identifier))
 
 # Set the clock
 clock = pygame.time.Clock()
@@ -44,24 +46,25 @@ while True:
             pygame.quit()
             sys.exit()
 
-    # Move the bars
+
+
+    # Move the bars from left to right
     for i in range(num_bars):
-        bar_x, bar_y, bar_speed = bars[i]
-        bar_x += bar_speed
-
-        # Check if the bar has reached the right edge of the screen
-        if bar_x + bar_width > screen_width:
-            bar_x = 0
-
-        bars[i] = (bar_x, bar_y, bar_speed)
+        bar_width += 0.8
+        if bar_width >= screen_width:
+            bar_width = 0
 
     # Clear the screen
     screen.fill((255, 255, 255))
 
     # Draw the bars
     for i in range(num_bars):
-        bar_x, bar_y, bar_speed = bars[i]
-        pygame.draw.rect(screen, bar_colors[i], (bar_x, bar_y, bar_width, bar_height))
+        bar_x, bar_y, bar_speed, bar_identifier = bars[i]
+        if bar_identifier % 2 == 0:
+            pygame.draw.rect(screen, bar_colors[1], (bar_x, bar_y, bar_width, bar_height))
+        else:
+            pygame.draw.rect(screen, bar_colors[0], (bar_x, bar_y, bar_width, bar_height))
+
 
     # Update the screen
     pygame.display.update()
